@@ -1,8 +1,9 @@
-import tkinter
 from tkinter import *
+import numpy as np
 
 class FrameBuilding():
     def __init__(self, board):
+        board = np.flip(np.flip(board, 0), -1)
         ## Generate the board
         self.blackWhite = ["brown", "white"]
         self.window = Tk()
@@ -17,15 +18,12 @@ class FrameBuilding():
                 self.canvas.create_rectangle(offset+rank*squareSize,offset+file*squareSize,offset+(rank+1)*squareSize, offset+(file+1)*squareSize, fill=self.blackWhite[(rank+file+1)%2], outline="black")
         ## Generate the pieces
 
-        for rank in range(len(board)):
-            for file in range(len(board[rank])):
-                offset = 35
+        for rank in range(0, len(board)):
+            for file in range(0, len(board[rank])):
+                offset = 60
                 squareSize = 70
-                ## Top, so the black pieces
-                if(file == 0 | file == 1):
-                    self.canvas.create_text(offset+rank*squareSize, offset+file*squareSize, text="BP")
-                ## If not the case, white pieces
-                else:
-                    pass
+                self.canvas.create_text(offset+file*squareSize, offset+rank*squareSize, text=board[rank][file])
         self.canvas.pack()
-        self.window.mainloop()
+        # self.window.mainloop()
+
+

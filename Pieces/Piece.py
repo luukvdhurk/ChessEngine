@@ -5,7 +5,7 @@ class Piece():
         self.rank = rank
         self.file = file
 
-    def moveOptions(self):
+    def moveOptions(self, board):
         pass
 
     def moveTo(self, rank, file):
