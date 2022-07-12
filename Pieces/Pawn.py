@@ -1,34 +1,30 @@
 from Pieces.Piece import Piece
 
+
 class Pawn(Piece):
     def __init__(self, color, rank, file):
         self.color = color
         self.rank = rank
         self.file = file
+        self.move_direction = 1 if (self.color == "White") else -1
 
     def moveOptions(self, board):
         moveList = []
-        if (self.color == "White"):
-            if (board[self.rank+1, self.file] == None):
-                moveList.append((self.rank+1, self.file))
-            if (issubclass(type(board[self.rank+1, self.file+1]), Piece)):
-                if(board[self.rank+1, self.file+1].color == "Black"):
-                    moveList.append((self.rank+1, self.file+1))
-            if (issubclass(type(board[self.rank+1, self.file-1]), Piece)):
-                if (board[self.rank + 1, self.file - 1].color == "Black"):
-                    moveList.append((self.rank+1, self.file-1))
-        else:
-            if (board[self.rank-1, self.file] == None):
-                moveList.append((self.rank-1, self.file))
-            if (issubclass(type(board[self.rank-1, self.file+1]), Piece)):
-                if (board[self.rank - 1, self.file + 1].color == "White"):
-                    moveList.append((self.rank-1, self.file+1))
-            if (issubclass(type(board[self.rank-1, self.file-1]), Piece)):
-                if (board[self.rank - 1, self.file + 1].color == "White"):
-                    moveList.append((self.rank-1, self.file-1))
+
+        if (7 >= self.rank + self.move_direction >= 0):
+            if (board[self.rank + self.move_direction, self.file] == None):
+                #Regular forward movement
+                moveList.append((self.rank + self.move_direction, self.file))
+            else:
+                for direction in [-1, 1]:
+                    #Diagonal capturing movement
+                    if (7 >= self.file + direction >= 0 and
+                            issubclass(type(board[self.rank + self.move_direction, self.file + direction]), Piece) and
+                            board[self.rank + self.move_direction, self.file + direction].color != self.color):
+                        moveList.append((self.rank + self.move_direction, self.file + direction))
+
+
         return moveList
-
-
 
     def moveTo(self, new_rank, new_file, board):
         board[self.rank, self.file] = None
